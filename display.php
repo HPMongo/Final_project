@@ -24,28 +24,37 @@
 	}
 
 	function displayData($result){
-		echo "Got to the display data";
 		echo "<link rel='stytesheet' type ='text/css' href='css/bootstrap.css'>";
+		echo "<div class='container'>";
+		echo "<table class='table'>";
+		echo "<tr><th>Item</th><th>Item description</th><th>Quantity available</th><th>Price</th>";
+		echo "<th>Quantity order</th></tr>";
 		while($row = $result->fetch_assoc()){
+			$id = $row['id'];
 			$imgloc = $row['pic_location'];
 			$desc = $row['description'];
-			echo "<div class='container'>";
-			echo "<img src='".$imgloc."' class='img-rounded' alt='' alt width='115' height='115'>";
-			echo $desc."</br>";
-			echo "</div>";
+			$qty = $row['quantities'];
+			$price = $row['price'];
+			echo "<tr>";
+			echo "<td><img src='".$imgloc."' class='img-rounded' alt='' alt width='115' height='115'></td>";
+			echo "<td>".$desc."</td>";
+			echo "<td>".$qty." available</td>";
+			echo "<td>$".$price."</td>";
+			echo "<td> Add button here</td>";
+			echo "</tr>";
 		}
+		echo "</table>";
+		echo "</div>";
 	}
 // 	Connecting to the database. If everything is good, call getData to
 // 	display the current inventory
 
-	echo "Got here!";
 	$mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 	
 	if (mysqli_connect_error()) {
 	    die('Connect Error (' . mysqli_connect_errno() . ') '
 	            . mysqli_connect_error());
 	} else {
-		echo "Everythin is connected!";
 		getData($mysqli);
 	}
 //	close connection
