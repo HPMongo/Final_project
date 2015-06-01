@@ -9,6 +9,7 @@
 <head>
 	<title>Widgetstastic</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<script type="text/javascript" src="js/script.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -20,7 +21,9 @@
 		</div>
 	</div>
 	<div class="container">
-		<h4 class="text-center">Here are the features of the day</h4>
+		<h4 class="text-left">Here are the features of the day</h4>
+		<div class="text-right" id="shoppingCart">
+		</div>
 		<?php 
 			include 'display.php';
 		?>

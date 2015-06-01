@@ -22,9 +22,12 @@
 		// close statement
 		$stmt->close();
 	}
-
+/*
+	This function will display the items in the inventory and allow the user to add items to the shopping
+	cart.
+*/
 	function displayData($result){
-		echo "<link rel='stytesheet' type ='text/css' href='css/bootstrap.css'>";
+		//echo "<link rel='stytesheet' type ='text/css' href='css/bootstrap.css'>";
 		echo "<div class='container'>";
 		echo "<table class='table'>";
 		echo "<tr><th>Item</th><th>Item description</th><th>Quantity available</th><th>Price</th>";
@@ -35,12 +38,30 @@
 			$desc = $row['description'];
 			$qty = $row['quantities'];
 			$price = $row['price'];
+			$maxDisplay = 30;
+			$moreThan30 = true;
+		//	get max items to display - limit this to 30 items max
+			if($qty < $maxDisplay) {
+				$maxDisplay = $qty;
+				$moreThan30 = false;
+			}
 			echo "<tr>";
 			echo "<td><img src='".$imgloc."' class='img-rounded' alt='' alt width='115' height='115'></td>";
 			echo "<td>".$desc."</td>";
-			echo "<td>".$qty." available</td>";
+			if($moreThan30) {
+				echo "<td> 30+ available</td>";
+			} else {
+				echo "<td>".$qty." available</td>";
+			}	
 			echo "<td>$".$price."</td>";
-			echo "<td> Add button here</td>";
+			echo "<td>";
+			echo "<form><select name='qty".$id."' id='qty".$id."'>";
+			for($i = 1; $i <= $maxDisplay;$i++) {
+				echo "<option value='".$i."'>".$i."</option>";
+			}
+			echo "</select></br>";
+			echo "<input type='submit' value='Add to cart' onclick='addToCart(".$id.")'></form>";
+			echo "</td>";
 			echo "</tr>";
 		}
 		echo "</table>";
