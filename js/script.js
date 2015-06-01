@@ -28,28 +28,46 @@ function getQty(inID) {
 
 function addToCart(inID) {
 	var qty = getQty(inID);
-	console.log(qty);
+	var itemExists = false;
 //	transform the item to an object
 	var newItem = new itemDetail(inID, qty);
+//	search to see if the item already exist; update the quantity if it does, otherwise add it to the 
+//  list
+	for(var i = 0; i < settings.cart.length; i++) {
+		if(inID === settings.cart[i].itemID) {
+			settings.cart[i].itemQty = qty;
+			itemExists = true;
+			break;
+		}
+	}
 //	add it to the setting
-	settings.cart.push(newItem);
+	if(!itemExists) {
+		settings.cart.push(newItem);
+	}
 //	store it to local storage
 	localStorage.setItem('userCart', JSON.stringify(settings));
 }
 /*
-	This function will display the current items in the cart
+	This function will display the total number of items in the cart
 */
 function displayCart() {
 	var items = 0;
 	settings.cart.forEach(function(s) {
-		items =+ s.itemQty;
+		items = items + s.itemQty;
+		console.log(s.itemQty);
 	});
 	if(typeof items !=='number' || items <= 0) {
 		items = 0;
 	}
-	document.getElementById("shoppingCart").innerHTML = "Cart: " + items;
+	document.getElementById("shoppingCart").innerHTML ="<a href='cart.php'><strong>Items in cart: </strong></a>" + items;
 }
 
+/*
+	This function will display the cart detail
+*/
+function displayDetail() {
+
+}
 /*
 	This function will load existing items from the local storage or create one if it doesn't exist
 */
