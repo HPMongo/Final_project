@@ -10,7 +10,10 @@ function getQty() {
 
 function itemDetail(inID, inQty) {
 	this.itemID = inID;
+	this.itemDesc = "";		//blank at the time of adding the item to the cart
 	this.itemQty = inQty;
+	this.itemPrice = 0.0;	//set to zero at the time of adding the item to the cart
+	this.itemTPrice = inQty * this.itemPrice;
 	this.getID = getID;
 	this.getQty = getQty;
 }

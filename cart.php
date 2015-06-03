@@ -1,3 +1,8 @@
+<?php
+	include 'login.php';
+	error_reporting(E_ALL);
+	ini_set('display_error','On');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +12,7 @@
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript">
+	/*
 	//	get cart information
 		var settings = null;
 		var shoppingCart = localStorage.getItem('userCart');
@@ -18,23 +24,20 @@
 		}
 	//
   		$(document).ready(function(){
-		    $("#button").click(function(){
-		    	$.ajax({
-		            type: "POST",
-		            dataType: "json",
-		            url: "view_cart.php",
-		            data: settings,
+		    $.ajax({
+		        type: "POST",
+		            //dataType: "json",
+		        url: "view_cart.php",
+		        data: settings,
 		            //contentType: "application/json",
-					//success: function(msg, string, jqXHR) {
-					//	$("#result").html(msg+string+jqXHR);
-					//}
-					function(data, status) {
-						alert("Data: "+ data + "status: " + status);
-					}
-				});
-		    });
-		});
-		
+				success: function(response) {
+					$("#result").html(response.itemID + "</br>" + response.itemDesc);
+				//	var newSettings = 
+				//	localStorage.setItem('newCart',JSON.stringify(newSettings));
+				}
+			});
+		});	
+	*/
 	</script>
 </head>
 <body>
@@ -42,9 +45,11 @@
 		<div class="page-header">
 			<h3>Items in your cart:</h3>
 		</div>
-		<input type="button" id="button" value="submit">
 	</div>
 	<div class="container" id="result" name="result">
+		<?php
+			include 'view_cart.php';
+		?>
 	</div>
 </body>
 </html>
