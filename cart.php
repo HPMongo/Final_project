@@ -8,11 +8,10 @@
 <head>
 	<title>Cart</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<!--script type="text/javascript" src="js/script.js"></script-->
 	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 	<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript">
-	/*
+	
 	//	get cart information
 		var settings = null;
 		var shoppingCart = localStorage.getItem('userCart');
@@ -26,18 +25,30 @@
   		$(document).ready(function(){
 		    $.ajax({
 		        type: "POST",
-		            //dataType: "json",
+		        dataType: "json",
 		        url: "view_cart.php",
-		        data: settings,
-		            //contentType: "application/json",
+		        data: JSON.stringify(settings),
 				success: function(response) {
-					$("#result").html(response.itemID + "</br>" + response.itemDesc);
-				//	var newSettings = 
-				//	localStorage.setItem('newCart',JSON.stringify(newSettings));
+				//Populate table
+					var output = "<table class='table table-striped'><tbody><tr><th>Item description</th><th>Quantity order</th><th>Unit price</th><th>Total</th></tr>";		
+					var total = 0;
+					$(response.cart).each(function(){
+						var displayQty = this.itemQty;
+						if(displayQty === 0) {
+							displayQty = "Out of stock";
+						}
+						output += "<tr><td>" + this.itemDesc + "</td><td>" + displayQty + "</td><td>$" + this.itemPrice + "</td><td>$" + this.itemTPrice +"</td></tr>";
+						total += this.itemTPrice;
+					})
+					output += "<tf><tr class='success'><td colspan='3'><strong>Total</strong></td><td><strong>$" + total + "</strong></td></tr>"
+				$("#result").append(output);
+		    	//	Replace existing cart with updated values
+					var newSettings = response;
+					localStorage.setItem('newCart',JSON.stringify(newSettings));
 				}
 			});
 		});	
-	*/
+	
 	</script>
 </head>
 <body>
@@ -47,9 +58,6 @@
 		</div>
 	</div>
 	<div class="container" id="result" name="result">
-		<?php
-			include 'view_cart.php';
-		?>
 	</div>
 </body>
 </html>

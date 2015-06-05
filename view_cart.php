@@ -12,9 +12,9 @@
 		// iterate through the JSON object
 		for($i=0; $i<count($inJSON->cart); $i++) {
 			$inID = $inJSON->cart[$i]->itemID;
-			echo "*".$inID."</br>";
+	///		echo "*".$inID."</br>";
 			$inQty = $inJSON->cart[$i]->itemQty;
-			echo "*".$inQty."</br>";
+	///		echo "*".$inQty."</br>";
 
 		// bind parameters
 			$stmt->bind_param("i",$inID);
@@ -29,17 +29,18 @@
 			$o_price = $row['price'];
 			$o_qty = $row['quantities'];
 			$tPrice = 0;
-			echo "Output id: ".$o_id."</br>";
-			echo "Output desc: ".$o_desc."</br>";
-			echo "Output price: ".$o_price."</br>";
+	///		echo "Output id: ".$o_id."</br>";
+	///		echo "Output desc: ".$o_desc."</br>";
+	///		echo "Output price: ".$o_price."</br>";
 			if($o_qty < $inQty) {
-				echo "Item is out of stock</br>";
-				$inQty = 0;		//set request quantity to zero
+	///			echo "Item is out of stock</br>";
+				$inQty = 0;			// set request quantity to zero
 			} else {
-				echo "Output qty: ".$inQty."</br>";
+	///			echo "Output qty: ".$inQty."</br>";
+	///			echo "</br>";		// do nothing here
 			}
 			$tPrice = $inQty * $o_price;
-			echo "Total price: $".$tPrice."</br>";
+	///		echo "Total price: $".$tPrice."</br>";
 		//	update 
 			$inJSON->cart[$i]->itemDesc = $o_desc;
 			$inJSON->cart[$i]->itemPrice = $o_price;
@@ -51,22 +52,14 @@
 	}
 
 //	Get JSON input
-//	$request_body = file_get_contents('php://input');
-	$request_body = '{"cart":[{"itemID":6,"itemDesc":"","itemQty":61,"itemPrice":0,"itemTPrice":0},{"itemID":2,"itemDesc":"","itemQty":2,"itemPrice":0,"itemTPrice":0},{"itemID":3,"itemDesc":"","itemQty":4,"itemPrice":0,"itemTPrice":0},{"itemID":4,"itemDesc":"","itemQty":8,"itemPrice":0,"itemTPrice":0}]}';
+	$request_body = file_get_contents('php://input');
+//	$request_body = '{"cart":[{"itemID":6,"itemDesc":"","itemQty":61,"itemPrice":0,"itemTPrice":0},{"itemID":2,"itemDesc":"","itemQty":2,"itemPrice":0,"itemTPrice":0},{"itemID":3,"itemDesc":"","itemQty":4,"itemPrice":0,"itemTPrice":0},{"itemID":4,"itemDesc":"","itemQty":8,"itemPrice":0,"itemTPrice":0}]}';
+
+	//$json = json_decode($request_body);
 
 	$json = json_decode($request_body);
-	print_r($json);
-	echo "</br></br>";
-	$someObject = json_decode($request_body);
-	print_r($someObject);
-	echo "</br></br>";
-	
-	for($i=0; $i<count($someObject->cart); $i++) {
-		$inID = $someObject->cart[$i]->itemID;
-		$inQty = $someObject->cart[$i]->itemQty;
-		echo $inID." - ".$inQty."</br>";
-	}
-	echo "</br></br>";
+//	print_r($json);
+//	echo "</br></br>";
 
 // 	Connecting to the database. If everything is good, call getData to
 // 	display the current inventory
@@ -78,10 +71,12 @@
 	            . mysqli_connect_error());
 	} else {
 		getData($mysqli, $json);
-		echo "After the database call!"."</br>";
-		print_r($json);
+///		echo "After the database call!"."</br>";
 	}
 //	close connection
 	$mysqli->close();
-
+///	print_r($json);
+	$encodeJSON = json_encode($json);
+//	print_r($encodeJSON);
+	echo $encodeJSON;
 ?>
