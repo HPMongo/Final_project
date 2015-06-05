@@ -40,7 +40,7 @@
 						output += "<tr><td>" + this.itemDesc + "</td><td>" + displayQty + "</td><td>$" + this.itemPrice + "</td><td>$" + this.itemTPrice +"</td></tr>";
 						total += this.itemTPrice;
 					})
-					output += "<tf><tr class='success'><td colspan='3'><strong>Total</strong></td><td><strong>$" + total + "</strong></td></tr>"
+					output += "<tf><tr class='info'><td colspan='3'><strong>Total</strong></td><td><strong>$" + total + "</strong></td></tr>"
 				$("#result").append(output);
 		    	//	Replace existing cart with updated values
 					var newSettings = response;
@@ -54,7 +54,11 @@
 <body>
 	<div class="container">
 		<div class="page-header">
-			<h3>Items in your cart:</h3>
+			<h3>SHOPPING CART</h3>		
+			<p>
+  			   	<a href="index.php" class="btn btn-primary" role="button">Continue shopping</a>
+   				<a href="start.php" class="btn btn-primary" role="button">Checkout</a>
+			</p>
 		</div>
 	</div>
 	<div class="container" id="result" name="result">
