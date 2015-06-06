@@ -4,6 +4,7 @@
 		<title>Checkout_start</title>
 		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<script type="text/javascript" src="js/validation.js"></script>
 	</head>
 	<body>
 	<div class="container">
@@ -36,8 +37,12 @@
 			  	<div class="form-group">
 			    	<label for="inputPassword2">Password</label>
 			    	<input type="password" class="form-control" id="inputPassword2" placeholder="Password">
-			  	</div>			 
-			  	<button type="submit" class="btn btn-default">Create account</button>
+			  	</div>			
+			  	<div class="form-group">
+			    	<label for="inputPassword3">Re-type Password</label>
+			    	<input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+			  	</div>			  
+			  	<button type="submit" class="btn btn-default" onclick="validateInput()">Create account</button>
 			</form>
 		</div>
 	</div>

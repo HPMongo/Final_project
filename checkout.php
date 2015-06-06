@@ -4,12 +4,6 @@
 		<title>Check-out</title>
 		<link rel="stylesheet" href="css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-
-		<!-- Latest compiled and minified CSS -->
-		<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"-->
-
-		<!-- Optional theme -->
-		<!--link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"-->
 	</head>
 	<body>
 	<div class="container">
