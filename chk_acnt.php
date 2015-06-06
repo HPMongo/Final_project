@@ -6,7 +6,7 @@
 <?php
 //	Get data from the current inventory
 	function getData($mysqli, $inEmail, &$return_code){
-		echo "In getData() - email is:'".$inEmail."'";
+	//	echo "In getData() - email is:'".$inEmail."'";
 		// create a prepare statement 
 		$stmt = $mysqli->prepare("SELECT cid FROM customer_reference WHERE cust_email=?;");
 
@@ -18,13 +18,13 @@
 		
 		// get result
 		$result = $stmt->get_result();
-		echo "After executing statement";
+	//	echo "After executing statement";
 
 		if(($result->num_rows)==0) {
-			echo $inEmail." does not exist in the table.";
+	//		echo $inEmail." does not exist in the table.";
 			$return_code = 0;
 		} else {
-			echo $inEmail." exists in the table.";
+	//		echo $inEmail." exists in the table.";
 			$return_code = 1;
 		}
 		// close statement
@@ -41,14 +41,14 @@
 		$inEmail = $_POST['email'];
 		if($inEmail != "") {	
 			$return_code = 0;			// everything is good
-			echo "Got input email!";
+	//		echo "Got input email!";
 		} else {
 			$return_code = 99;			// invalid email
-			echo "Invalid email";
+	//		echo "Invalid email";
 		}
 	} else {
 		$return_code = 99;				// missing input
-		echo "Missing email";
+	//	echo "Missing email";
 	}
 	
 	if($return_code === SUCCESS) {
@@ -60,7 +60,7 @@
 		            . mysqli_connect_error());
 			$return_code = 99;			// set rc to fail
 		} else {
-			echo "Connecting to the database";
+	//		echo "Connecting to the database";
 			getData($mysqli, $inEmail, $return_code);
 		}
 //	close connection

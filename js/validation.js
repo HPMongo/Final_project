@@ -18,9 +18,40 @@ function getRandValue() {
 	return rVal;
 }
 /*
+	This function will add a new account using the user's input. 
+*/
+function addAccount(inEmail, inPW, inSalt) {
+	var req = new XMLHttpRequest();
+	if(!req) {
+		throw "Unable to create HttpRequest.";
+	}
+	var url = "add_acnt.php";
+	/////	Test salt - needs to be removed after testing
+	inSalt = "test";
+	/////
+	var parameters = "email="+inEmail+"&pw="+inPW+"&salt="+inSalt;
+
+	req.onreadystatechange=function() {
+		if(req.readyState===4) {
+			var response = this.responseText;
+ 			if(response == "0") {
+ 				alert("Add success!");
+ 			} else if(response == "1") {
+				alert("Put something for rc1");
+ 			} else {
+ 				alert("PHP display:"+response);
+				//alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
+ 			}
+		}	
+	}
+	req.open("POST",url,true);
+	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	req.send(parameters);
+}
+/*
 	This function will send a POST request to the account validation.
 */
-function checkEmail(inEmail, inPW) {
+function checkEmail(inEmail, inPW, inSalt) {
 	var req = new XMLHttpRequest();
 	if(!req) {
 		throw "Unable to create HttpRequest.";
@@ -31,14 +62,14 @@ function checkEmail(inEmail, inPW) {
 	req.onreadystatechange=function() {
 		if(req.readyState===4) {
 			var response = this.responseText;
-			var return_code;
  			if(response == "0") {
  				alert("Email is not in db, continue!");
+ 				addAccount(inEmail, inPW, inSalt);
  			} else if(response == "1") {
 				alert("This email has been registered. Please use the registered information to log in.");
  			} else {
  				alert("PHP display:"+response);
-				//alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
+			//	alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
  			}
 		}	
 	}
@@ -99,7 +130,7 @@ function validateInput(){
 	}
 //	Call account validation to perform the rest of the processing
 	if(valid_input) {
-		checkEmail(inEmail, in_pw1);	
+		checkEmail(inEmail, in_pw1, salt);	
 	}
 
 }
