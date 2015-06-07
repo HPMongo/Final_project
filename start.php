@@ -23,7 +23,7 @@
 			    	<label for="inputPassword1">Password</label>
 			    	<input type="password" class="form-control" id="inputPassword1" placeholder="Password">
 			  	</div>			 
-			  	<button type="submit" class="btn btn-default">Log in</button>
+			  	<button type="submit" class="btn btn-default" onclick="validateLogin()">Log in</button>
 			</form>
 		</div>
 		<div class="cols-sm-5 col-sm-offset-7">

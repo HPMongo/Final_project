@@ -20,25 +20,21 @@ function getRandValue() {
 /*
 	This function will add a new account using the user's input. 
 */
-function validateAccount(inEmail, inPW, inSalt) {
+function validateAccount(inEmail, inPW) {
 	var req = new XMLHttpRequest();
 	if(!req) {
 		throw "Unable to create HttpRequest.";
 	}
-	var url = "add_acnt.php";
-	/////	Test salt - needs to be removed after testing
-	inSalt = "test";
-	/////
-	var parameters = "email="+inEmail+"&pw="+inPW+"&salt="+inSalt;
+	var url = "chk_acnt.php";
+	var parameters = "email="+inEmail+"&pw="+inPW;
 
 	req.onreadystatechange=function() {
 		if(req.readyState===4) {
 			var response = this.responseText;
- 			if(response == "0") {
- 				alert("Add success!");
- 				window.location="checkout.php";
+ 			if(response === "0") {
+ 				window.location.href="checkout.php";
  			} else if(response == "1") {
-				alert("Put something for rc1");
+				alert("Incorrect password. Please try again.");
  			} else {
  				alert("PHP display:"+response);
 				//alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
@@ -66,11 +62,9 @@ function addAccount(inEmail, inPW, inSalt) {
 	req.onreadystatechange=function() {
 		if(req.readyState===4) {
 			var response = this.responseText;
- 			if(response == "0") {
- 		//		alert("Account added!");
- 		//		addAccount(inEmail, inPW, inSalt);
- 		 		window.location="checkout.php";
- 			} else if(response == "1") {
+ 			if(response === "0") {
+ 		 		window.location.href="checkout.php";
+ 			} else if(response === "1") {
 				alert("This email has been registered. Please use the registered information to log in.");
  			} else {
  				alert("PHP display:"+response);
@@ -82,9 +76,6 @@ function addAccount(inEmail, inPW, inSalt) {
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send(parameters);
 }
-/*
-	This function will send a POST request to set up a new account
-*/
 /*
 	This function will validate the user's email and passwords.
 */
@@ -139,3 +130,38 @@ function validateInput(){
 	}
 
 }
+
+/*
+	This function will validate the user's login email and password.
+*/
+function validateLogin(){
+	var inEmail = document.getElementById("inputEmail1").value;
+	var in_pw1 = document.getElementById("inputPassword1").value;
+	var valid_input = true;
+
+//	Validate that email is entered
+	if(inEmail === null || inEmail === "") {
+		alert("A valid email is needed!");
+		valid_input = false;
+	}
+//	Validate email format
+	if(valid_input) {
+		if(!ValidateEmail(inEmail)) {
+			alert("You have entered an invalid email address!");
+			valid_input = false;
+		}
+	}
+//	Validate that password is entered
+	if(valid_input) {
+		if(in_pw1 === null || in_pw1 === "") {
+			alert("A valid password is needed!");
+			valid_input = false;
+		}
+	}
+//	Call account validation to perform the rest of the processing
+	if(valid_input) {
+		validateAccount(inEmail, in_pw1);	
+	}
+
+}
+

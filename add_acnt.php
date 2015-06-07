@@ -9,11 +9,6 @@
 	function.
 */
 	function getHash($inPW, $inSalt, &$hashValue){
-// Get the hash password
-	//	echo "$inPW: ".$inPW;
-	//	echo "$inSalt: ".$inSalt;
-	//	echo "$hashValue: ".$hashValue;
-
 		$hashValue = crypt($inPW, $inSalt);
 	}
 /*	
@@ -21,7 +16,7 @@
 */
 	function addData($mysqli, $inEmail, $inHash, $inSalt, &$return_code){
 		// create a prepare statement 
-		$stmt = $mysqli->prepare("INSERT into top_secret(email, hash_value, salt)VALUES(?,?,?)");
+		$stmt = $mysqli->prepare("INSERT into top_secret(email, hash_value, salt)VALUES(?,?,?);");
 		
 		// bind parameters as three strings
 		$stmt->bind_param("sss",$inEmail, $inHash, $inSalt);
@@ -41,11 +36,12 @@
 	Add the relationship between the account and the customer.
 */
 	function addRelation($mysqli, $inEmail, &$return_code){
+		session_start();
 	//	echo "In addRelation()";
 	//	echo "email: ".$inEmail;
 
 		// create a prepare statement 
-		$stmt = $mysqli->prepare("INSERT into customer_reference(cust_email)VALUES(?)");
+		$stmt = $mysqli->prepare("INSERT into customer_reference(cust_email)VALUES(?);");
 		
 		// bind parameters as string
 		$stmt->bind_param("s",$inEmail);
@@ -58,38 +54,20 @@
 	//		echo "Relation added!";
 			$return_code = 0;		//set succesful return code
 		}
+
+		$cust_id = $mysqli->insert_id;
+		// store customer id to session
+		//echo "Customer id is: ".$cust_id."/";
+
+		$_SESSION['customer_id'] = $cust_id;
+		$_SESSION['valid_login'] = "YES";
+		
 		// close statement
 		$stmt->close();
 	}
 /*
-	Store customer id for subsequent process
+	Get data from the customer reference table
 */
-	function storeCustomerInfo($mysqli, $inEmail, &$return_code){
-	//	echo "In storeCustomerInfo()";
-	//	echo "email: ".$inEmail;
-
-		// create a prepare statement 
-		$stmt = $mysqli->prepare("SELECT cid FROM customer_reference WHERE cust_email=?");
-		
-		// bind parameters as string
-		$stmt->bind_param("s",$inEmail);
-		
-		// execute the statement
-		if(!$stmt->execute()){
-			echo "Unable to retrieve customer id: (".$stmt->errno.")".$stmt->error;
-			$return_code = 99;		//set unsuccessful return code
-		} else {
-		// store customer id to session
-			$stmt->bind_result($cid);
-			session_start();
-			$_SESSION['customer_id'] = $cid;
-			$_SESSION['valid_login'] = "YES";
-			$return_code = 0;		//set succesful return code
-		}
-		// close statement
-		$stmt->close();
-	}
-//	Get data from the current inventory
 	function getData($mysqli, $inEmail, &$return_code){
 	//	echo "In getData() - email is:'".$inEmail."'";
 		// create a prepare statement 
@@ -192,10 +170,6 @@
 //	Add relationship
 			if($return_code ===SUCCESS) {
 				addRelation($mysqli, $inEmail, $return_code);
-			}
-//	Store customer information
-			if($return_code ===SUCCESS){
-				storeCustomerInfo($mysqli, $inEmail, $return_code);
 			}
 		}
 //	close connection
