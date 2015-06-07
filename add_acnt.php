@@ -9,23 +9,17 @@
 	function.
 */
 	function getHash($inPW, $inSalt, &$hashValue){
-	//	echo "In addData()";
-	//	echo "pw: ".$inPW;
-	//	echo " inSalt: ".$inSalt;	
-	//	echo " oldHash: ".$hashValue;
-	
 // Get the hash password
-	$hashValue = crypt($inPW, $inSalt);
+	//	echo "$inPW: ".$inPW;
+	//	echo "$inSalt: ".$inSalt;
+	//	echo "$hashValue: ".$hashValue;
+
+		$hashValue = crypt($inPW, $inSalt);
 	}
 /*	
 	Add new account in the database
 */
 	function addData($mysqli, $inEmail, $inHash, $inSalt, &$return_code){
-	//	echo "In addData()";
-	//	echo "email: ".$inEmail;
-	//	echo " inHash: ".$inHash;
-	//	echo " inSalt: ".$inSalt;
-
 		// create a prepare statement 
 		$stmt = $mysqli->prepare("INSERT into top_secret(email, hash_value, salt)VALUES(?,?,?)");
 		
@@ -34,7 +28,7 @@
 		
 		// execute the statement
 		if(!$stmt->execute()){
-	//		echo "Insert account failed: (".$stmt->errno.")".$stmt->error;
+			echo "Insert account failed: (".$stmt->errno.")".$stmt->error;
 			$return_code = 99;		//set unsuccessful return code
 		} else {
 	//		echo "Account added!";
@@ -58,7 +52,7 @@
 		
 		// execute the statement
 		if(!$stmt->execute()){
-	//		echo "Insert relationship failed: (".$stmt->errno.")".$stmt->error;
+			echo "Insert relationship failed: (".$stmt->errno.")".$stmt->error;
 			$return_code = 99;		//set unsuccessful return code
 		} else {
 	//		echo "Relation added!";
@@ -91,6 +85,31 @@
 			$_SESSION['customer_id'] = $cid;
 			$_SESSION['valid_login'] = "YES";
 			$return_code = 0;		//set succesful return code
+		}
+		// close statement
+		$stmt->close();
+	}
+//	Get data from the current inventory
+	function getData($mysqli, $inEmail, &$return_code){
+	//	echo "In getData() - email is:'".$inEmail."'";
+		// create a prepare statement 
+		$stmt = $mysqli->prepare("SELECT cid FROM customer_reference WHERE cust_email=?;");
+
+		// bind parameters as string
+		$stmt->bind_param("s",$inEmail);
+		
+		// execute the statement
+		$stmt->execute();
+		
+		// get result
+		$result = $stmt->get_result();
+
+		if(($result->num_rows)==0) {
+	//		echo $inEmail." does not exist in the table.";
+			$return_code = 0;
+		} else {
+	//		echo $inEmail." exists in the table.";
+			$return_code = 1;
 		}
 		// close statement
 		$stmt->close();
@@ -156,12 +175,20 @@
 		            . mysqli_connect_error());
 			$return_code = 99;			// set rc to fail
 		} else {
+//	Check to see if the account exists in the database
 			$hashValue = 0;
-			getHash($inPW, $inSalt, $hashValue);
-	//		echo "Hash value is: ".$hashValue;
-	//		echo " now connecting to the database.";
+			getData($mysqli, $inEmail, $return_code);
+	//		echo "B4 calling hash. rc is: ".$return_code;
+			if($return_code===SUCCESS){
+	//			echo "Inn hash";
+				getHash($inPW, $inSalt, $hashValue);
+	//			echo "after hash";
+			}
+	//		echo "newhash is: ".$hashValue;
 //	Create account data
-			addData($mysqli, $inEmail, $hashValue, $inSalt, $return_code);
+			if($return_code===SUCCESS){
+				addData($mysqli, $inEmail, $hashValue, $inSalt, $return_code);
+			}
 //	Add relationship
 			if($return_code ===SUCCESS) {
 				addRelation($mysqli, $inEmail, $return_code);
@@ -173,7 +200,6 @@
 		}
 //	close connection
 		$mysqli->close();
-
 	}
 	echo $return_code;	
 ?>
