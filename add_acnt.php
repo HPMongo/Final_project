@@ -16,7 +16,7 @@
 */
 	function addData($mysqli, $inEmail, $inHash, $inSalt, &$return_code){
 		// create a prepare statement 
-		$stmt = $mysqli->prepare("INSERT into top_secret(email, hash_value, salt)VALUES(?,?,?);");
+		$stmt = $mysqli->prepare("INSERT into top_secret(email, hash_value, salt)VALUES(?,?,?)");
 		
 		// bind parameters as three strings
 		$stmt->bind_param("sss",$inEmail, $inHash, $inSalt);
@@ -41,7 +41,7 @@
 	//	echo "email: ".$inEmail;
 
 		// create a prepare statement 
-		$stmt = $mysqli->prepare("INSERT into customer_reference(cust_email)VALUES(?);");
+		$stmt = $mysqli->prepare("INSERT into customer_reference(cust_email)VALUES(?)");
 		
 		// bind parameters as string
 		$stmt->bind_param("s",$inEmail);
@@ -71,7 +71,7 @@
 	function getData($mysqli, $inEmail, &$return_code){
 	//	echo "In getData() - email is:'".$inEmail."'";
 		// create a prepare statement 
-		$stmt = $mysqli->prepare("SELECT cid FROM customer_reference WHERE cust_email=?;");
+		$stmt = $mysqli->prepare("SELECT cid FROM customer_reference WHERE cust_email=?");
 
 		// bind parameters as string
 		$stmt->bind_param("s",$inEmail);

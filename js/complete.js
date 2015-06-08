@@ -22,12 +22,12 @@ function addBioInfo(fName, street, city, state, zipCode, phone){
 		if(req.readyState===4) {
 			var response = this.responseText;
  			if(response === "0") {
- 				alert("Shipping added!");
+ 				alert("Add successful!");
  				//document.getElementById("addBioBtn").disabled = true;
- 			} //else {
- 			//	alert("PHP display: "+response);
+ 			} else {
+ 				alert("PHP display: "+response);
 				//alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
- 			//}
+ 			}
 		}	
 	}
 	req.open("POST",url,true);
@@ -49,12 +49,12 @@ function sendPayment(pType, pName, pNum, pMonth, pYear){
 		if(req.readyState===4) {
 			var response = this.responseText;
  			if(response === "0") {
- 				alert("Payment added!");
+ 				alert("Add payment successful!");
  				window.location.href="summary.php";
- 			}// else {
- 			//	alert("PHP display: "+response);
+ 			} else {
+ 				alert("PHP display: "+response);
 				//alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
- 			//}
+ 			}
 		}	
 	}
 	req.open("POST",url,true);
@@ -126,10 +126,16 @@ function addBio(){
 	if(city === null || city === "") {
 		valArray.push("City is required.");
 		valid_input = false;
+	} else if(!validateText(city)) {
+		valArray.push("Invalid city.");
+		valid_input = false;
 	}
 //	validate state 
 	if(state === null || state === "") {
 		valArray.push("State is required.");
+		valid_input = false;
+	} else if(!validateText(state)) {
+		valArray.push("Invalid state.");
 		valid_input = false;
 	}
 //	validate zip code 

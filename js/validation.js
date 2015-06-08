@@ -6,7 +6,6 @@
 function ValidateEmail(inputText) {
     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 	return re.test(inputText);
-
 }
 /*
 	This function will generate a random string that will be used as a salt value in the database.
@@ -29,15 +28,15 @@ function validateAccount(inEmail, inPW) {
 	var parameters = "email="+inEmail+"&pw="+inPW;
 
 	req.onreadystatechange=function() {
-		if(req.readyState===4) {
+		if(req.readyState==4) {
 			var response = this.responseText;
  			if(response === "0") {
  				window.location.href="checkout.php";
  			} else if(response == "1") {
 				alert("Incorrect password. Please try again.");
  			} else {
- 				alert("PHP display:"+response);
-				//alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
+ 			//	alert("PHP display:"+response);
+				alert("We're currently experience with some technical issue. Please try again in 30 seconds.");
  			}
 		}	
 	}
@@ -54,21 +53,21 @@ function addAccount(inEmail, inPW, inSalt) {
 		throw "Unable to create HttpRequest.";
 	}
 	/////	Test salt - needs to be removed after testing
-	inSalt = "test";
+	///inSalt = "test";
 	/////
 	var url = "add_acnt.php";
 	var parameters = "email="+inEmail+"&pw="+inPW+"&salt="+inSalt;
 
 	req.onreadystatechange=function() {
-		if(req.readyState===4) {
+		if(req.readyState==4) {
 			var response = this.responseText;
  			if(response === "0") {
  		 		window.location.href="checkout.php";
  			} else if(response === "1") {
 				alert("This email has been registered. Please use the registered information to log in.");
  			} else {
- 				alert("PHP display:"+response);
-			//	alert("We're currently experience with some technical issue. Please come back at a later time to complete your purschase.");
+ 			//	alert("PHP display:"+response);
+				alert("We're currently experience with some technical issue. Please try again in 30 seconds.");
  			}
 		}	
 	}

@@ -44,7 +44,7 @@
 				$("#result").append(output);
 		    	//	Replace existing cart with updated values
 					var newSettings = response;
-					localStorage.setItem('newCart',JSON.stringify(newSettings));
+					localStorage.setItem('userCart',JSON.stringify(newSettings));
 				}
 			});
 		});	
