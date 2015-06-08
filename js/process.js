@@ -15,9 +15,25 @@ function addBioInfo(fName, street, city, state, zipCode, phone){
 	if(!req) {
 		throw "Unable to create HttpRequest.";
 	}
-	var url = "add_bio.php";
+//	var url = "add_bio.php";
 	var parameters = "fName="+fName+"&street="+street+"&city="+city+"&state="+state+"&zipCode="+zipCode+"&phone="+phone;
-
+	  	
+	  		$(document).ready(function(){
+		    var request = $.ajax({
+		        type: "POST",
+		        dataType: "text",
+		        url: "add_bio.php",
+		        async: false,
+		        data: parameters
+		     });
+			
+				request.done(function( msg ) {
+  					if(msg=="0"){
+ 						alert("Shipping added!");
+  					}
+				});
+		});	
+/*
 	req.onreadystatechange=function() {
 		if(req.readyState===4) {
 			var response = this.responseText;
@@ -33,6 +49,7 @@ function addBioInfo(fName, street, city, state, zipCode, phone){
 	req.open("POST",url,true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send(parameters);
+*/
 }
 /*
 	This function will add payment information to the database
@@ -42,9 +59,27 @@ function sendPayment(pType, pName, pNum, pMonth, pYear){
 	if(!req) {
 		throw "Unable to create HttpRequest.";
 	}
-	var url = "add_payment.php";
+//	var url = "add_payment.php";
 	var parameters = "pType="+pType+"&pName="+pName+"&pNum="+pNum+"&pMonth="+pMonth+"&pYear="+pYear;
+	  	
+	  	$(document).ready(function(){
+		    var request = $.ajax({
+		        type: "POST",
+		        dataType: "text",
+		        url: "add_payment.php",
+		        async: false,
+		        data: parameters
+		     });
+			
+				request.done(function( msg ) {
+  					if(msg=="0"){
+ 						alert("Payment added!");
+ 						window.location.href="summary.php";
+  					}
+				});
+		});	
 
+/*
 	req.onreadystatechange=function() {
 		if(req.readyState===4) {
 			var response = this.responseText;
@@ -60,6 +95,7 @@ function sendPayment(pType, pName, pNum, pMonth, pYear){
 	req.open("POST",url,true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send(parameters);
+*/
 }
 /*
 	This function will add payment information

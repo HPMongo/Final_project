@@ -24,9 +24,30 @@ function validateAccount(inEmail, inPW) {
 	if(!req) {
 		throw "Unable to create HttpRequest.";
 	}
-	var url = "chk_acnt.php";
+	//var url = "chk_acnt.php";
 	var parameters = "email="+inEmail+"&pw="+inPW;
 
+	  		$(document).ready(function(){
+		    var request = $.ajax({
+		        type: "POST",
+		        dataType: "text",
+		        url: "chk_acnt.php",
+		        async: false,
+		        data: parameters
+		     });
+			
+				request.done(function( msg ) {
+  					if(msg=="0"){
+  					//	var url = "checkout.php";
+  					//	$(location).attr('href',url);
+ 		 				window.location.href="checkout.php";
+  					} else {
+  						alert("Incorrect password.");
+  					}
+				});
+		});	
+
+/*
 	req.onreadystatechange=function() {
 		if(req.readyState==4) {
 			var response = this.responseText;
@@ -43,7 +64,9 @@ function validateAccount(inEmail, inPW) {
 	req.open("POST",url,true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send(parameters);
+*/
 }
+
 /*
 	This function will send a POST request to the account validation.
 */
@@ -52,12 +75,28 @@ function addAccount(inEmail, inPW, inSalt) {
 	if(!req) {
 		throw "Unable to create HttpRequest.";
 	}
-	/////	Test salt - needs to be removed after testing
-	///inSalt = "test";
-	/////
-	var url = "add_acnt.php";
+//	var url = "add_acnt.php";
 	var parameters = "email="+inEmail+"&pw="+inPW+"&salt="+inSalt;
-
+	  		$(document).ready(function(){
+		    var request = $.ajax({
+		        type: "POST",
+		        dataType: "text",
+		        url: "add_acnt.php",
+		        async: false,
+		        data: parameters
+		     });
+			
+				request.done(function( msg ) {
+  					if(msg=="0"){
+ 		 				window.location.href="checkout.php";
+  					} else if(msg=="1"){
+						alert("This email has been registered. Please use the registered information to log in.");
+  					} else {
+  						alert("We're currently experience with some technical issue. Please try again in 30 seconds.");
+  					}
+				});
+		});	
+/*
 	req.onreadystatechange=function() {
 		if(req.readyState==4) {
 			var response = this.responseText;
@@ -74,6 +113,7 @@ function addAccount(inEmail, inPW, inSalt) {
 	req.open("POST",url,true);
 	req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	req.send(parameters);
+*/
 }
 /*
 	This function will validate the user's email and passwords.

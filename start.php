@@ -3,6 +3,8 @@
 	<head>
 		<title>Checkout_start</title>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<script type="text/javascript" src="js/validation.js"></script>
 	</head>
 	<body>

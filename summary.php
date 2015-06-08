@@ -6,8 +6,23 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 		<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+		<?php
+		session_start();
+		ob_start();
+		$cid;
+		if(!empty($_SESSION['valid_login'])) {
+			$login_info = $_SESSION['valid_login'];
+	//		echo "Login value: ".$login_info."</br>";
+			if($login_info != "YES"){
+				ob_end_clean();
+				echo '<meta http-equiv="refresh" content=".01;url=index.php" />';
+			}
+		} else {
+			ob_end_clean();
+			echo '<meta http-equiv="refresh" content=".01;url=index.php" />';
+		}
+		?>
 		<script type="text/javascript">
-		
 		//	get cart information
 			var settings = null;
 			var shoppingCart = localStorage.getItem('userCart');
@@ -25,14 +40,8 @@
 			        url: "complete_order.php",
 			        data: JSON.stringify(settings),
 					success: function(response) {
-					//Populate table
-				///		if(response.rc == '0'){
-				///			var output = "<h3>Confirmation number: " + response.confirmation "</h3>" ;								
-				///			$("#confirmDiv").append(output);
-			    	//	Replace existing cart with updated values
 						settings = {'cart':[]};			//create one and store it in local storage
 						localStorage.setItem('userCart',JSON.stringify(settings));
-				///		}
 					}
 				});
 			});	
